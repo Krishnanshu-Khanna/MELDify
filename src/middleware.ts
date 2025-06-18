@@ -1,6 +1,6 @@
 import { auth } from "./server/auth";
 
-const PUBLIC_ROUTES = ["/", "/login", "/signup"];
+const PUBLIC_ROUTES = ["/", "/login", "/signup","/hero.png"];
 
 export default auth((req) => {
   const isAuthenticated = !!req.auth;
