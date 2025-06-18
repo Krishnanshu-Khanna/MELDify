@@ -26,7 +26,7 @@ function UploadVideo({ apiKey, onAnalysis }: UploadVideoProps) {
 
       setStatus("analyzing");
 
-      const apiUrl = process.env.API_URL ?? "http://localhost:8000"; // fallback if env not set
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       const res = await axios.post(`${apiUrl}/predict`, fastapiForm, {
         headers: {
           Authorization: `Bearer ${apiKey}`,
