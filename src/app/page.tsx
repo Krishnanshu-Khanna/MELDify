@@ -23,7 +23,7 @@ export default function LandingPage() {
         {/* Right Side: Abstract Art or Illustration */}
           <Image
             src="/hero.png"
-            alt="Abstract emotional analysis art"
+            alt="meldify-hero"
             width={1000}
             height={800}
             priority

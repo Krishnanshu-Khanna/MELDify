@@ -1,10 +1,13 @@
 import { auth } from "./server/auth";
 
+const PUBLIC_ROUTES = ["/", "/login", "/signup"];
+
 export default auth((req) => {
   const isAuthenticated = !!req.auth;
+  const { pathname } = req.nextUrl;
 
-  // Allow access to "/" even if not authenticated
-  if (req.nextUrl.pathname === "/") {
+  // Allow public routes without auth
+  if (PUBLIC_ROUTES.includes(pathname)) {
     return;
   }
 
@@ -15,5 +18,8 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/((?!_next|favicon.ico).*)"], // applies to all routes except static assets
+  matcher: [
+    "/((?!_next|favicon|.*\\.(png|jpg|jpeg|gif|svg|webp|ico|css|js|txt)).*)",
+  ],
 };
+
