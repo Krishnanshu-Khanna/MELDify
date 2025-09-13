@@ -1,29 +1,78 @@
-# Create T3 App
+# MELDify
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Video sentiment analysis API and web app using multimodal fusion of text, audio, and video frames.
 
-## What's next? How do I make an app with this?
+## Tech Used
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+* **Frontend**: Next.js (hosted on Vercel)
+* **Backend**: FastAPI (Python)
+* **Deep Learning**: PyTorch, Transformers (BERT for text)
+* **Infrastructure**: Docker, AWS EC2 (backend), ngrok (for HTTPS proxy)
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Features
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+* Upload a video from the web app ([https://meldify.vercel.app](https://meldify.vercel.app)) and instantly get sentiment results.
+* Predict sentiment using multimodal fusion:
 
-## Learn More
+  * **Text** from transcripts → BERT embeddings
+  * **Video frames** → CNN features
+  * **Audio** → Mel spectrogram features
+* REST API with API key authentication
+* Monthly quotas per user (e.g., 1000 requests)
+* Web dashboard + API usage examples
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## API Usage
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+Use your secret API key to authorize requests. Keep it private.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### TypeScript Example
 
-## How do I deploy this?
+```ts
+const file = input.files[0];
+const formData = new FormData();
+formData.append("video", file);
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+const response = await fetch("https://blessed-remotely-jennet.ngrok-free.app/predict", {
+  method: "POST",
+  headers: { Authorization: "Bearer " + apiKey },
+  body: formData,
+});
+
+const result = await response.json();
+console.log(result);
+```
+
+### cURL Example
+
+```bash
+curl -X POST "https://blessed-remotely-jennet.ngrok-free.app/predict" \
+  -H "Authorization: Bearer $API_KEY" \
+  -F "video=@sample.mp4"
+```
+
+### Example Response
+
+```json
+{
+  "label": "negative",
+  "score": 0.81,
+  "details": {
+    "text_sentiment": "negative",
+    "audio_sentiment": "neutral",
+    "video_sentiment": "negative"
+  }
+}
+```
+
+---
+
+## Web App
+
+* **URL**: [meldify.vercel.app](https://meldify.vercel.app)
+* Users can upload video directly through the interface.
+* Results are shown on the page with predicted label and confidence score.
+* Authenticated requests are counted against your monthly API quota.
+
+---
+
+*Secure, multimodal video sentiment analysis — usable via API or web app.*
